@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.fivestars.pagehelperdemo.dao.MyDao">
+
+    <select id="select" resultType="integer">
+        SELECT id FROM test
+    </select>
+
+    <select id="selectById" resultType="cn.fivestars.pagehelperdemo.dto.MyDto">
+        SELECT * from dto
+        <where>
+            id = #{id, jdbcType=BIGINT}
+        </where>
+    </select>
+
+    <select id="selectByName" resultType="cn.fivestars.pagehelperdemo.dto.MyDto">
+        SELECT * from dto
+        <where>
+            name = #{name, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+    <select id="selectByDto" resultType="cn.fivestars.pagehelperdemo.dto.MyDto">
+        SELECT * from dto
+        <where>
+            id = #{id, jdbcType=BIGINT}
+            and name = #{name, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+    <select id="selectByDtoList" resultType="cn.fivestars.pagehelperdemo.dto.MyDto">
+        select * from dto
+        where
+        id in
+        <foreach collection="list" index="index" item="dto" open="(" close=")" separator=",">
+            #{dto.id, jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+    <select id="selectByIdList" resultType="cn.fivestars.pagehelperdemo.dto.MyDto">
+        select * from dto
+        where
+        id in
+        <foreach collection="list" index="index" item="id" open="(" close=")" separator=",">
+            #{id, jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+    <select id="selectByIdAndDtoList" resultType="cn.fivestars.pagehelperdemo.dto.MyDto">
+        select * from dto
+        where
+        id = #{id, jdbcType=BIGINT}
+        and
+        id in
+        <foreach collection="list" index="index" item="dto" open="(" close=")" separator=",">
+            #{dto.id, jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+    <select id="selectByIdAndNameList" resultType="cn.fivestars.pagehelperdemo.dto.MyDto">
+        select * from dto
+        where
+        id = #{id, jdbcType=BIGINT}
+        and
+        name in
+        <foreach collection="list" index="index" item="name" open="(" close=")" separator=",">
+            #{name, jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+    <select id="selectByNameList" resultType="cn.fivestars.pagehelperdemo.dto.MyDto">
+        select * from dto
+        where
+        name in
+        <foreach collection="list" index="index" item="name" open="(" close=")" separator=",">
+            #{name, jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+    <select id="selectByChild" resultType="cn.fivestars.pagehelperdemo.dto.MyDto">
+        select * from dto
+        where
+        id  = #{child.id, jdbcType=BIGINT}
+
+    </select>
+
+    <select id="selectByChildList" resultType="cn.fivestars.pagehelperdemo.dto.MyDto">
+        select * from dto
+        where
+        id  in
+        <foreach collection="list" item="dto" open="(" separator="," close=")">
+            #{dto.child.id, jdbcType=BIGINT}
+        </foreach>
+
+    </select>
+
+
+</mapper>

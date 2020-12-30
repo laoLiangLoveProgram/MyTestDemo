@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.fivestars.pagehelperdemo.dao.TransactionDao">
+    <insert id="batchInsert">
+        insert into transaction (id, name1, name2) values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=BIGINT}, #{item.name1,jdbcType=VARCHAR}, #{item.name2,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <update id="batchUpdate1">
+        <foreach collection="list" item="item">
+            update TRANSACTION
+            set name1 = #{item.name1,jdbcType=VARCHAR}
+            where ID = #{item.id,jdbcType=BIGINT};
+        </foreach>
+    </update>
+    <update id="batchUpdate11">
+        update TRANSACTION
+        set name1=
+        <foreach collection="list" item="item" open="case id " close="end">
+            when #{item.id,jdbcType=BIGINT} then #{item.name1,jdbcType=VARCHAR}
+        </foreach>
+        <where>
+            id in
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                <if test="index!=0 and index%800==0">
+                    0) or (
+                </if>
+                #{item.id, jdbcType=BIGINT}
+            </foreach>
+        </where>
+    </update>
+
+    <update id="batchUpdate2">
+        <foreach collection="list" item="item">
+            update TRANSACTION
+            set NAME2 = #{item.name2,jdbcType=VARCHAR}
+            where ID = #{item.id,jdbcType=BIGINT};
+        </foreach>
+    </update>
+
+    <update id="batchUpdate22">
+        update TRANSACTION
+        <trim prefix="set">
+            <trim prefix="name2=case" suffix="end,">
+                <foreach collection="list" item="item">
+                    when id = #{item.id, jdbcType=BIGINT} then #{item.name2, jdbcType=VARCHAR}
+                </foreach>
+            </trim>
+        </trim>
+        <where>
+            id in
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                <if test="index!=0 and index%800==0">
+                    0) or (
+                </if>
+                #{item.id, jdbcType=BIGINT}
+            </foreach>
+        </where>
+    </update>
+
+    <select id="selectAll" resultType="cn.fivestars.pagehelperdemo.dto.TransactionDto">
+        select *
+        from TRANSACTION
+    </select>
+
+    <delete id="deleteAll">
+        truncate table transaction;
+    </delete>
+</mapper>
