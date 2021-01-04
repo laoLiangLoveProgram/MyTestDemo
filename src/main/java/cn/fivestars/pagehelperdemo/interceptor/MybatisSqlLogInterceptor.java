@@ -1,4 +1,4 @@
-package cn.fivestars.pagehelperdemo.inceptor;
+package cn.fivestars.pagehelperdemo.interceptor;
 
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -218,38 +218,4 @@ public class MybatisSqlLogInterceptor implements Interceptor {
                         parameterObjectClass.isAssignableFrom(Character.class) || parameterObjectClass.isAssignableFrom(Boolean.class));
     }
 
-    /**
-     * 是否DefaultSqlSession的内部类StrictMap
-     */
-    private boolean isStrictMap(Class<?> parameterObjectClass) {
-        return DefaultSqlSession.StrictMap.class.isAssignableFrom(parameterObjectClass);
-    }
-
-    /**
-     * 是否List的实现类
-     */
-    private boolean isList(Class<?> clazz) {
-        Class<?>[] interfaceClasses = clazz.getInterfaces();
-        for (Class<?> interfaceClass : interfaceClasses) {
-            if (List.class.isAssignableFrom(interfaceClass)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * 是否Map的实现类
-     */
-    private boolean isMap(Class<?> parameterObjectClass) {
-        Class<?>[] interfaceClasses = parameterObjectClass.getInterfaces();
-        for (Class<?> interfaceClass : interfaceClasses) {
-            if (Map.class.isAssignableFrom(interfaceClass)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }
